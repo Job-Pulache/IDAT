@@ -1,0 +1,122 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ titulo }} | Atlantic City CRM{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <div class="mb-4">
+            <h1 class="h3 mb-1">{{ titulo }}</h1>
+            <p class="text-muted mb-0">
+                Complete la información principal del cliente.
+            </p>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">DNI</label>
+                            {{ form.dni }}
+
+                            {% if form.dni.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.dni.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Estado</label>
+                            {{ form.estado }}
+
+                            {% if form.estado.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.estado.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Nombres</label>
+                            {{ form.nombres }}
+
+                            {% if form.nombres.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.nombres.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Apellidos</label>
+                            {{ form.apellidos }}
+
+                            {% if form.apellidos.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.apellidos.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono</label>
+                            {{ form.telefono }}
+
+                            {% if form.telefono.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.telefono.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Correo</label>
+                            {{ form.correo }}
+
+                            {% if form.correo.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.correo.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Dirección</label>
+                            {{ form.direccion }}
+
+                            {% if form.direccion.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.direccion.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'lista_clientes' %}" class="btn btn-outline-secondary">
+                            Cancelar
+                        </a>
+
+                        <button type="submit" class="btn btn-primary">
+                            {{ boton }}
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

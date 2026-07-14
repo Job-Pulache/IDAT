@@ -1,0 +1,137 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Clientes | Atlantic City CRM{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">Clientes</h1>
+        <p class="text-muted mb-0">
+            Listado centralizado de clientes registrados en Atlantic City.
+        </p>
+    </div>
+
+    {% if perms.clientes.add_cliente %}
+        <a href="{% url 'crear_cliente' %}" class="btn btn-primary">
+            Nuevo cliente
+        </a>
+    {% endif %}
+</div>
+
+
+<form method="get" class="card card-body shadow-sm mb-4">
+            <div class="row g-2 align-items-end">
+
+                <div class="col-md-9">
+                    <label class="form-label">Buscar cliente</label>
+
+                    <input 
+                        type="text"
+                        name="buscar"
+                        class="form-control"
+                        placeholder="Buscar por DNI, nombre, apellido, correo o teléfono"
+                        value="{{ busqueda }}"
+                    >
+                </div>
+
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Buscar
+                    </button>
+
+                    <a href="{% url 'lista_clientes' %}" class="btn btn-outline-secondary">
+                        Limpiar
+                    </a>
+                </div>
+
+            </div>
+        </form>
+
+        <div class="card shadow-sm">
+
+
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        {% if clientes %}
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>DNI</th>
+                            <th>Cliente</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Estado</th>
+                            <th>Fecha registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for cliente in clientes %}
+                            <tr>
+                                <td>{{ cliente.dni }}</td>
+
+                                <td>
+                                    <strong>{{ cliente.nombres }} {{ cliente.apellidos }}</strong>
+                                </td>
+
+                                <td>{{ cliente.correo }}</td>
+                                <td>{{ cliente.telefono }}</td>
+
+                                <td>
+                                    {% if cliente.estado == 'activo' %}
+                                        <span class="badge bg-success">Activo</span>
+                                    {% elif cliente.estado == 'inactivo' %}
+                                        <span class="badge bg-secondary">Inactivo</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Bloqueado</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>{{ cliente.fecha_registro|date:"d/m/Y H:i" }}</td>
+                                <td>
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'detalle_cliente' cliente.id %}" class="btn btn-sm btn-outline-primary">
+                                        Ver ficha
+                                    </a>
+
+                                    {% if perms.clientes.change_cliente %}
+                                        <a href="{% url 'editar_cliente' cliente.id %}" class="btn btn-sm btn-outline-secondary">
+                                            Editar
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        {% else %}
+
+            <div class="text-center py-5">
+                {% if busqueda %}
+    <h5>No se encontraron resultados</h5>
+    <p class="text-muted">
+        No hay clientes que coincidan con "{{ busqueda }}".
+    </p>
+{% else %}
+    <h5>No hay clientes registrados</h5>
+    <p class="text-muted">
+        Cuando registres clientes, aparecerán en esta tabla.
+    </p>
+{% endif %}
+            </div>
+
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

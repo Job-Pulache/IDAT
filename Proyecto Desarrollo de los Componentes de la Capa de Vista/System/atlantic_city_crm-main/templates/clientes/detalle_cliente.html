@@ -1,0 +1,304 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Ficha del cliente | Atlantic City CRM{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">
+            {{ cliente.nombres }} {{ cliente.apellidos }}
+        </h1>
+        <p class="text-muted mb-0">
+            Ficha única del cliente registrada en Atlantic City.
+        </p>
+    </div>
+
+    <div class="d-flex gap-2 flex-wrap">
+        <a href="{% url 'lista_clientes' %}" class="btn btn-outline-secondary">
+            Volver
+        </a>
+
+        {% if perms.visitas.add_visita %}
+            <a href="{% url 'crear_visita' cliente.id %}" class="btn btn-success">
+                Registrar visita
+            </a>
+        {% endif %}
+
+        {% if perms.incidencias.add_incidencia %}
+            <a href="{% url 'crear_incidencia' cliente.id %}" class="btn btn-warning">
+                Registrar incidencia
+            </a>
+        {% endif %}
+
+        {% if perms.promociones.add_clientepromocion %}
+            <a href="{% url 'asignar_promocion' cliente.id %}" class="btn btn-info">
+                Asignar promoción
+            </a>
+        {% endif %}
+
+        {% if perms.clientes.change_cliente %}
+            <a href="{% url 'editar_cliente' cliente.id %}" class="btn btn-primary">
+                Editar
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row g-4">
+
+    <!-- Datos principales del cliente -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-dark text-white">
+                Datos del cliente
+            </div>
+
+            <div class="card-body">
+                <p class="mb-2">
+                    <strong>DNI:</strong><br>
+                    {{ cliente.dni }}
+                </p>
+
+                <p class="mb-2">
+                    <strong>Correo:</strong><br>
+                    {{ cliente.correo }}
+                </p>
+
+                <p class="mb-2">
+                    <strong>Teléfono:</strong><br>
+                    {{ cliente.telefono|default:"No registrado" }}
+                </p>
+
+                <p class="mb-2">
+                    <strong>Dirección:</strong><br>
+                    {{ cliente.direccion|default:"No registrada" }}
+                </p>
+
+                <p class="mb-2">
+                    <strong>Estado:</strong><br>
+                    {% if cliente.estado == 'activo' %}
+                        <span class="badge bg-success">Activo</span>
+                    {% elif cliente.estado == 'inactivo' %}
+                        <span class="badge bg-secondary">Inactivo</span>
+                    {% else %}
+                        <span class="badge bg-danger">Bloqueado</span>
+                    {% endif %}
+                </p>
+
+                <p class="mb-0">
+                    <strong>Fecha de registro:</strong><br>
+                    {{ cliente.fecha_registro|date:"d/m/Y H:i" }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumen de actividad -->
+    <div class="col-lg-8">
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center">
+                    <div class="card-body">
+                        <h2 class="h4 mb-1">{{ total_visitas }}</h2>
+                        <p class="text-muted mb-0">Visitas</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center">
+                    <div class="card-body">
+                        <h2 class="h4 mb-1">{{ total_promociones }}</h2>
+                        <p class="text-muted mb-0">Promociones</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center">
+                    <div class="card-body">
+                        <h2 class="h4 mb-1">{{ total_incidencias }}</h2>
+                        <p class="text-muted mb-0">Incidencias</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span>Últimas visitas registradas</span>
+                <span class="badge bg-primary">{{ total_visitas }}</span>
+            </div>
+
+            <div class="card-body">
+
+                {% if visitas %}
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Motivo</th>
+                                    <th>Observación</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for visita in visitas %}
+                                    <tr>
+                                        <td>{{ visita.fecha_visita|date:"d/m/Y H:i" }}</td>
+                                        <td>{{ visita.get_motivo_display }}</td>
+                                        <td>{{ visita.observacion|default:"Sin observación" }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% if total_visitas > 5 %}
+                            <p class="text-muted small mt-3 mb-0">
+                                Se muestran las últimas 5 visitas registradas.
+                            </p>
+                        {% endif %}
+                    </div>
+
+                {% else %}
+
+                    <p class="text-muted mb-0">
+                        Este cliente todavía no tiene visitas registradas.
+                    </p>
+
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span>Últimas promociones asignadas</span>
+                <span class="badge bg-success">{{ total_promociones }}</span>
+            </div>
+
+            <div class="card-body">
+
+                {% if promociones_cliente %}
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Promoción</th>
+                                    <th>Estado</th>
+                                    <th>Observación</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for item in promociones_cliente %}
+                                    <tr>
+                                        <td>{{ item.fecha_asignacion|date:"d/m/Y H:i" }}</td>
+                                        <td>{{ item.promocion.nombre }}</td>
+
+                                        <td>
+                                            {% if item.estado == 'asignada' %}
+                                                <span class="badge bg-primary">Asignada</span>
+                                            {% elif item.estado == 'usada' %}
+                                                <span class="badge bg-success">Usada</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Vencida</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <td>{{ item.observacion|default:"Sin observación" }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% if total_promociones > 5 %}
+                        <p class="text-muted small mt-3 mb-0">
+                            Se muestran las últimas 5 promociones asignadas.
+                        </p>
+                    {% endif %}
+
+                {% else %}
+
+                    <p class="text-muted mb-0">
+                        Este cliente todavía no tiene promociones asignadas.
+                    </p>
+
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span>Últimas incidencias registradas</span>
+                <span class="badge bg-danger">{{ total_incidencias }}</span>
+            </div>
+
+            <div class="card-body">
+
+                {% if incidencias %}
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Asunto</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for incidencia in incidencias %}
+                                    <tr>
+                                        <td>{{ incidencia.fecha_registro|date:"d/m/Y H:i" }}</td>
+                                        <td>{{ incidencia.get_tipo_display }}</td>
+                                        <td>{{ incidencia.asunto }}</td>
+
+                                        <td>
+                                            {% if incidencia.estado == 'pendiente' %}
+                                                <span class="badge bg-warning text-dark">Pendiente</span>
+                                            {% elif incidencia.estado == 'en_proceso' %}
+                                                <span class="badge bg-info text-dark">En proceso</span>
+                                            {% elif incidencia.estado == 'resuelta' %}
+                                                <span class="badge bg-success">Resuelta</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Cerrada</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% if total_incidencias > 5 %}
+                        <p class="text-muted small mt-3 mb-0">
+                            Se muestran las últimas 5 incidencias registradas.
+                        </p>
+                    {% endif %}
+
+                {% else %}
+
+                    <p class="text-muted mb-0">
+                        Este cliente todavía no tiene incidencias registradas.
+                    </p>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

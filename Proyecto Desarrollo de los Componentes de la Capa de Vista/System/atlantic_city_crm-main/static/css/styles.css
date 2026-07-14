@@ -1,0 +1,177 @@
+/* Estilos generales del sistema Atlantic City CRM */
+
+body {
+    background-color: #f4f6f9;
+    color: #212529;
+}
+
+/* Mejora visual del menú principal */
+.navbar {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.navbar-brand {
+    letter-spacing: 0.3px;
+}
+
+.navbar .nav-link {
+    font-size: 0.95rem;
+}
+
+/* Tarjetas más limpias y modernas */
+.card {
+    border: 0;
+    border-radius: 14px;
+}
+
+.card-header {
+    border-bottom: 1px solid #edf0f2;
+    font-weight: 600;
+}
+
+/* Botones con una apariencia más uniforme */
+.btn {
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+/* Tablas más agradables a la vista */
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.table td {
+    font-size: 0.92rem;
+}
+
+/* Badges más suaves */
+.badge {
+    border-radius: 999px;
+    padding: 0.45em 0.7em;
+}
+
+/* Formularios más ordenados */
+.form-control,
+.form-select {
+    border-radius: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* Títulos de pantalla */
+h1,
+h2,
+h3 {
+    font-weight: 700;
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        padding-top: 14px;
+    }
+
+    .navbar-nav {
+        gap: 4px;
+    }
+
+    .navbar .d-flex {
+        padding-top: 12px;
+    }
+}
+
+/* Pantalla de login */
+
+.login-wrapper {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 460px;
+}
+
+.login-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    border-radius: 18px;
+    background: #0d6efd;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+}
+
+/* Dashboard */
+
+.dashboard-card {
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.dashboard-card small {
+    opacity: 0.9;
+}
+
+.dashboard-label {
+    font-size: 0.92rem;
+    opacity: 0.95;
+}
+
+.dashboard-number {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.dashboard-card-primary {
+    background: linear-gradient(135deg, #0d6efd, #084298);
+}
+
+.dashboard-card-success {
+    background: linear-gradient(135deg, #198754, #0f5132);
+}
+
+.dashboard-card-warning {
+    background: linear-gradient(135deg, #ffc107, #b58100);
+    color: #212529;
+}
+
+.dashboard-card-info {
+    background: linear-gradient(135deg, #0dcaf0, #087990);
+}
+
+/* Tablas del dashboard */
+
+.dashboard-table-card .card-header {
+    font-size: 0.95rem;
+}
+
+.dashboard-table-card table a {
+    font-weight: 600;
+}
+
+.dashboard-table-card .table th {
+    color: #6c757d;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.dashboard-table-card .table td {
+    vertical-align: middle;
+}

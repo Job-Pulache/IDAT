@@ -1,0 +1,74 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Asignar promoción | Atlantic City CRM{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <div class="mb-4">
+            <h1 class="h3 mb-1">Asignar promoción</h1>
+            <p class="text-muted mb-0">
+                Cliente: <strong>{{ cliente.nombres }} {{ cliente.apellidos }}</strong>
+            </p>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Promoción</label>
+                        {{ form.promocion }}
+
+                        {% if form.promocion.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.promocion.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Estado</label>
+                        {{ form.estado }}
+
+                        {% if form.estado.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.estado.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Observación</label>
+                        {{ form.observacion }}
+
+                        {% if form.observacion.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.observacion.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'detalle_cliente' cliente.id %}" class="btn btn-outline-secondary">
+                            Cancelar
+                        </a>
+
+                        <button type="submit" class="btn btn-primary">
+                            Asignar promoción
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
